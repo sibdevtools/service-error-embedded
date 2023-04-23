@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.github.sibmaks'
-version = '0.0.1'
+version = '0.0.2'
 sourceCompatibility = jdk_version
 
 configurations {
@@ -86,12 +86,5 @@ publishing {
         gpr(MavenPublication) {
             from(components.java)
         }
-    }
-}
-
-jar {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
