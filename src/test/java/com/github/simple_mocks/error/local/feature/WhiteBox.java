@@ -1,13 +1,13 @@
-package com.github.sibmaks.error.local.feature;
+package com.github.simple_mocks.error.local.feature;
 
 /**
  * @author sibmaks
- * @since 2023-04-22
+ * @since 0.0.1
  */
 public class WhiteBox {
 
     /**
-     * Get field value from object by name
+     * Get field value from an object by name
      *
      * @param object object instance
      * @param fieldName field name

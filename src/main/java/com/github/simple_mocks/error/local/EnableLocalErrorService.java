@@ -1,6 +1,6 @@
-package com.github.sibmaks.error.local;
+package com.github.simple_mocks.error.local;
 
-import com.github.sibmaks.error.local.conf.LocalErrorServiceConfig;
+import com.github.simple_mocks.error.local.conf.LocalErrorServiceConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * Enabler for local error service implementation
  *
  * @author sibmaks
- * @since 2023-04-11
+ * @since 0.0.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -18,9 +18,16 @@ import java.lang.annotation.*;
 public @interface EnableLocalErrorService {
     /**
      * Resource path of error descriptions.<br/>
-     * Example: "classpath:/config/mocks/errors.json"
+     * Example: {@code "classpath:/config/mocks/errors/"}
      *
      * @return resource path
      */
     String value();
+
+    /**
+     * Default locale, in case if requested isn't presented
+     *
+     * @return default locale
+     */
+    String defaultLocale() default "en";
 }

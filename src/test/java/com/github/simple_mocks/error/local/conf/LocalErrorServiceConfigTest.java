@@ -1,8 +1,8 @@
-package com.github.sibmaks.error.local.conf;
+package com.github.simple_mocks.error.local.conf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.sibmaks.error.local.EnableLocalErrorService;
-import com.github.sibmaks.error.local.feature.WhiteBox;
+import com.github.simple_mocks.error.local.EnableLocalErrorService;
+import com.github.simple_mocks.error.local.feature.WhiteBox;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -21,14 +21,15 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author sibmaks
- * @since 2023-04-22
+ * @since 0.0.1
  */
 class LocalErrorServiceConfigTest {
 
     @Test
     void testSetImportMetadataWhenNoAnnotationAttributes() {
         var metadata = mock(AnnotationMetadata.class);
-        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName())).thenReturn(null);
+        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName()))
+                .thenReturn(null);
 
         var config = new LocalErrorServiceConfig();
 
@@ -39,14 +40,15 @@ class LocalErrorServiceConfigTest {
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
-    void testSetImportMetadataWhenNoAnnotationAttributes(boolean contains) {
+    void testSetImportMetadataWhenNoValue(boolean contains) {
         Map<String, Object> attributes = new HashMap<>();
-        if(contains) {
+        if (contains) {
             attributes.put("value", "");
         }
 
         var metadata = mock(AnnotationMetadata.class);
-        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName())).thenReturn(attributes);
+        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName()))
+                .thenReturn(attributes);
 
         var config = new LocalErrorServiceConfig();
 
@@ -57,19 +59,42 @@ class LocalErrorServiceConfigTest {
     }
 
     @Test
-    void testSetImportMetadata() throws NoSuchFieldException, IllegalAccessException {
-        String path = UUID.randomUUID().toString();
+    void testSetImportMetadataWhenNoDefaultLocale() {
+        var path = UUID.randomUUID().toString();
         Map<String, Object> attributes = Map.of("value", path);
 
         var metadata = mock(AnnotationMetadata.class);
-        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName())).thenReturn(attributes);
+        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName()))
+                .thenReturn(attributes);
+
+        var config = new LocalErrorServiceConfig();
+
+        var exception = assertThrows(IllegalArgumentException.class,
+                () -> config.setImportMetadata(metadata));
+
+        assertEquals("Default locale of @EnableLocalErrorService should not be null or blank", exception.getMessage());
+    }
+
+    @Test
+    void testSetImportMetadata() throws NoSuchFieldException, IllegalAccessException {
+        var path = UUID.randomUUID().toString();
+        var defaultLocale = UUID.randomUUID().toString();
+        Map<String, Object> attributes = Map.of(
+                "value", path,
+                "defaultLocale", defaultLocale
+        );
+
+        var metadata = mock(AnnotationMetadata.class);
+        when(metadata.getAnnotationAttributes(EnableLocalErrorService.class.getName()))
+                .thenReturn(attributes);
 
         var config = new LocalErrorServiceConfig();
 
         config.setImportMetadata(metadata);
 
+        var exceptedPath = path + "/*.json";
         var configLocation = WhiteBox.getField(config, "configLocation");
-        assertEquals(path, configLocation);
+        assertEquals(exceptedPath, configLocation);
     }
 
     @Test
@@ -83,9 +108,10 @@ class LocalErrorServiceConfigTest {
         var resourceLoader = mock(DefaultResourceLoader.class);
 
         var errorsConfig = mock(Resource.class);
-        when(resourceLoader.getResource(configLocation)).thenReturn(errorsConfig);
+        when(resourceLoader.getResource(configLocation))
+                .thenReturn(errorsConfig);
 
-        var errorService = config.errorService(objectMapper, resourceLoader);
+        var errorService = config.localErrorService(objectMapper, resourceLoader);
         assertNotNull(errorService);
     }
 }
