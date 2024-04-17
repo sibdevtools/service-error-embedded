@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 public @interface EnableLocalErrorService {
     /**
      * Resource path of error descriptions.<br/>
-     * Example: {@code "classpath:/config/mocks/errors/"}
+     * Example: {@code "classpath:/config/mocks/errors/*.json"}
      *
      * @return resource path
      */
