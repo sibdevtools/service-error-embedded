@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LocalErrorService implements ErrorService {
     private final Locale defaultLocale;
-    private final Resource[] errorsConfigs;
+    private final List<Resource> errorsConfigs;
     private final ObjectMapper objectMapper;
     private final Map<Locale, Map<String, Map<String, ErrorDescription>>> localizedSystemErrorDescriptions;
 
@@ -32,7 +33,7 @@ public class LocalErrorService implements ErrorService {
      * @param objectMapper  object mapper
      */
     public LocalErrorService(Locale defaultLocale,
-                             Resource[] errorsConfigs,
+                             List<Resource> errorsConfigs,
                              ObjectMapper objectMapper) {
         this.defaultLocale = defaultLocale;
         this.errorsConfigs = errorsConfigs;

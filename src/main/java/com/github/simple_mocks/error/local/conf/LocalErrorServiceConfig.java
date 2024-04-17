@@ -8,12 +8,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author sibmaks
@@ -34,8 +35,10 @@ public class LocalErrorServiceConfig implements ImportAware {
     @Bean
     public ErrorService localErrorService(ObjectMapper objectMapper,
                                           DefaultResourceLoader resourceLoader) throws IOException {
-        var resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-        var errorsConfigs = resourcePatternResolver.getResources(configLocation);
+        var patternResolver = new PathMatchingResourcePatternResolver(resourceLoader);
+        var errorsConfigs = Arrays.stream(patternResolver.getResources(configLocation))
+                .filter(it -> Objects.requireNonNull(it.getFilename()).endsWith(".json"))
+                .toList();
         return new LocalErrorService(defaultLocale, errorsConfigs, objectMapper);
     }
 
@@ -49,7 +52,7 @@ public class LocalErrorServiceConfig implements ImportAware {
         if (StringUtils.isBlank(resourcePath)) {
             throw new IllegalArgumentException("Value of @EnableLocalErrorService should not be null or blank");
         }
-        this.configLocation = Path.of(resourcePath, "*.json").toString();
+        this.configLocation = resourcePath;
         var defaultLocaleCode = (String) attributes.get("defaultLocale");
         if (StringUtils.isBlank(defaultLocaleCode)) {
             throw new IllegalArgumentException("Default locale of @EnableLocalErrorService should not be null or blank");

@@ -7,8 +7,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -28,7 +30,7 @@ class LocalErrorServiceTest {
     void setUp() throws IOException {
         var enResource = new ClassPathResource("samples/errors/en.json");
         var ruRUResource = new ClassPathResource("samples/errors/ru_RU.json");
-        var resources = new ClassPathResource[]{enResource, ruRUResource};
+        var resources = List.<Resource>of(enResource, ruRUResource);
 
         var objectMapper = new ObjectMapper();
 
