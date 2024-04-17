@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ class LocalErrorServiceFailCasesTest {
     @MethodSource("setUpWhenLocaleIsNotPassedCases")
     void testSetUpWhenLocaleIsNotPassed(String filename) {
         var resource = mock(Resource.class);
-        var resources = new Resource[]{resource};
+        var resources = List.<Resource>of(resource);
 
         when(resource.getFilename())
                 .thenReturn(filename);
@@ -48,7 +49,7 @@ class LocalErrorServiceFailCasesTest {
     @Test
     void testSetUpWhenDefaultLocaleHasNotLocalization() {
         var enResource = new ClassPathResource("samples/errors/en.json");
-        var resources = new Resource[]{enResource};
+        var resources = List.<Resource>of(enResource);
 
         var objectMapper = new ObjectMapper();
 

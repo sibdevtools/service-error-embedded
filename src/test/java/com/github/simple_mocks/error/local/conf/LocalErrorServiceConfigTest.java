@@ -92,9 +92,8 @@ class LocalErrorServiceConfigTest {
 
         config.setImportMetadata(metadata);
 
-        var exceptedPath = path + "/*.json";
         var configLocation = WhiteBox.getField(config, "configLocation");
-        assertEquals(exceptedPath, configLocation);
+        assertEquals(path, configLocation);
     }
 
     @Test
@@ -110,6 +109,10 @@ class LocalErrorServiceConfigTest {
         var errorsConfig = mock(Resource.class);
         when(resourceLoader.getResource(configLocation))
                 .thenReturn(errorsConfig);
+
+        var fileName = UUID.randomUUID() + ".json";
+        when(errorsConfig.getFilename())
+                .thenReturn(fileName);
 
         var errorService = config.localErrorService(objectMapper, resourceLoader);
         assertNotNull(errorService);
