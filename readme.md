@@ -1,4 +1,4 @@
-# Simple Mock - Error Local
+# Simple Mock - Error Embedded
 
 ## To build
 

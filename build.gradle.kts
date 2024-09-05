@@ -5,45 +5,63 @@ plugins {
     id("maven-publish")
     id("java")
     id("jacoco")
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
 version = "${project.property("version")}"
 group = "${project.property("group")}"
 
+val targetJavaVersion = (project.property("jdk_version") as String).toInt()
+val javaVersion = JavaVersion.toVersion(targetJavaVersion)
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 repositories {
     mavenCentral()
-    maven(url = "https://sibmaks.ru/repository/maven-snapshots/")
-    maven(url = "https://sibmaks.ru/repository/maven-releases/")
+    maven(url = "https://nexus.sibmaks.ru/repository/maven-snapshots/")
+    maven(url = "https://nexus.sibmaks.ru/repository/maven-releases/")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${project.property("lib_springboot_version")}")
+    }
 }
 
 dependencies {
-    compileOnly("org.projectlombok", "lombok", "${project.property("lib_lombok_version")}")
-    annotationProcessor("org.projectlombok", "lombok", "${project.property("lib_lombok_version")}")
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
-    implementation("org.springframework", "spring-context", "${project.property("lib_spring_version")}")
-    implementation("org.springframework", "spring-core", "${project.property("lib_spring_version")}")
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework:spring-core")
+    implementation("org.springframework.data:spring-data-jpa")
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
 
-    implementation("com.fasterxml.jackson.core", "jackson-databind", "${project.property("lib_jackson_version")}")
-    implementation("org.apache.commons", "commons-lang3", "${project.property("lib_commons_lang3_version")}")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
 
-    implementation("jakarta.annotation", "jakarta.annotation-api", "${project.property("lib_annotation_api_version")}")
+    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("org.apache.commons:commons-lang3")
 
-    implementation("com.github.simple-mocks", "api-error", "${project.property("lib_api_error_version")}")
+    implementation("jakarta.annotation:jakarta.annotation-api")
 
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "${project.property("lib_junit_version")}")
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", "${project.property("lib_junit_version")}")
+    implementation("com.github.simple-mocks:api-error:${project.property("lib_api_error_version")}")
+    implementation("com.github.simple-mocks:api-content:${project.property("lib_api_content_version")}")
 
-    testImplementation("org.mockito", "mockito-core", "${project.property("lib_mockito_version")}")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", "${project.property("lib_junit_version")}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+
+    testImplementation("org.mockito:mockito-core")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
-val targetJavaVersion = "${project.property("jdk_version")}".toInt()
 tasks.withType<JavaCompile>().configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
@@ -56,7 +74,6 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 java {
-    val javaVersion = JavaVersion.toVersion(targetJavaVersion)
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
@@ -97,7 +114,7 @@ publishing {
             from(components["java"])
             pom {
                 packaging = "jar"
-                url = "https://github.com/simple-mocks/service-error-local"
+                url = "https://github.com/simple-mocks/service-error-embedded"
 
                 licenses {
                     license {
@@ -107,9 +124,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:https://github.com/simple-mocks/service-error-local.git")
-                    developerConnection.set("scm:git:ssh://github.com/sib-energy-craft")
-                    url.set("https://github.com/simple-mocks/service-error-local")
+                    connection.set("scm:https://github.com/simple-mocks/service-error-embedded.git")
+                    developerConnection.set("scm:git:ssh://github.com/simple-mocks")
+                    url.set("https://github.com/simple-mocks/service-error-embedded")
                 }
 
                 developers {
@@ -124,20 +141,12 @@ publishing {
     }
     repositories {
         maven {
-            val releasesUrl = uri("https://sibmaks.ru/repository/maven-releases/")
-            val snapshotsUrl = uri("https://sibmaks.ru/repository/maven-snapshots/")
+            val releasesUrl = uri("https://nexus.sibmaks.ru/repository/maven-releases/")
+            val snapshotsUrl = uri("https://nexus.sibmaks.ru/repository/maven-snapshots/")
             url = if (version.toString().endsWith("SNAPSHOT")) snapshotsUrl else releasesUrl
             credentials {
                 username = project.findProperty("nexus_username")?.toString() ?: System.getenv("NEXUS_USERNAME")
                 password = project.findProperty("nexus_password")?.toString() ?: System.getenv("NEXUS_PASSWORD")
-            }
-        }
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/simple-mocks/service-error-local")
-            credentials {
-                username = project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.key")?.toString() ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
