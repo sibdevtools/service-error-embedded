@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 /**
+ * Mutable error service implementation
+ *
  * @author sibmaks
  * @since 0.0.1
  */
@@ -33,9 +35,9 @@ public class MutableErrorServiceEmbedded implements MutableErrorService {
 
     @Override
     public void addLocalizations(@Nonnull AddLocalizationsRq addLocalizationsRq) {
-        var errorSource = addLocalizationsRq.errorSource();
+        var sourceId = addLocalizationsRq.sourceId();
 
-        var systemCode = errorSource.getSystemCode();
+        var systemCode = sourceId.getSystemCode();
 
         mutableContentService.createSystem(
                 CreateSystemRq.builder()
@@ -43,11 +45,11 @@ public class MutableErrorServiceEmbedded implements MutableErrorService {
                         .build()
         );
 
-        var kindCode = errorSource.getKindCode();
+        var kindCode = sourceId.getKindCode();
         mutableContentService.createContentGroup(
                 CreateContentGroupRq.builder()
                         .systemCode(systemCode)
-                        .type(Constants.ERROR_TYPE)
+                        .type(Constants.CONTENT_TYPE)
                         .code(kindCode)
                         .build()
         );
@@ -60,35 +62,34 @@ public class MutableErrorServiceEmbedded implements MutableErrorService {
             var userLocale = localizationKey.userLocale();
             var iso3Locale = userLocale.getISO3Language();
 
-            var localizations = localizationEntry.getValue();
+            var localization = localizationEntry.getValue();
 
-            for (var localization : localizations) {
-                mutableContentService.createContent(
-                        CreateContentRq.builder()
-                                .systemCode(systemCode)
-                                .type(Constants.ERROR_TYPE)
-                                .groupCode(kindCode)
-                                .code(iso3Locale + ":" + errorCode)
-                                .content(localization)
-                                .attributes(
-                                        Map.of(
-                                                Constants.ATTRIBUTE_LOCALE, iso3Locale,
-                                                Constants.ATTRIBUTE_CODE, errorCode
-                                        )
-                                )
-                                .build()
-                );
-            }
+            mutableContentService.createContent(
+                    CreateContentRq.builder()
+                            .systemCode(systemCode)
+                            .type(Constants.CONTENT_TYPE)
+                            .groupCode(kindCode)
+                            .code(iso3Locale + ":" + errorCode)
+                            .content(localization)
+                            .attributes(
+                                    Map.of(
+                                            Constants.ATTRIBUTE_LOCALE, iso3Locale,
+                                            Constants.ATTRIBUTE_CODE, errorCode
+                                    )
+                            )
+                            .build()
+            );
+
         }
 
     }
 
     @Override
     public void deleteLocalizations(@Nonnull DeleteLocalizationsRq deleteLocalizationsRq) {
-        var errorSource = deleteLocalizationsRq.errorSource();
+        var sourceId = deleteLocalizationsRq.sourceId();
 
-        var systemCode = errorSource.getSystemCode();
-        var kindCode = errorSource.getKindCode();
+        var systemCode = sourceId.getSystemCode();
+        var kindCode = sourceId.getKindCode();
 
         var errorLocalizationKeys = deleteLocalizationsRq.localizationKeys();
 
@@ -96,7 +97,7 @@ public class MutableErrorServiceEmbedded implements MutableErrorService {
             mutableContentService.deleteContent(
                     DeleteContentRq.builder()
                             .systemCode(systemCode)
-                            .type(Constants.ERROR_TYPE)
+                            .type(Constants.CONTENT_TYPE)
                             .groupCode(kindCode)
                             .code(errorLocalizationKey.userLocale() + ":" + errorLocalizationKey.errorCode())
                             .build()

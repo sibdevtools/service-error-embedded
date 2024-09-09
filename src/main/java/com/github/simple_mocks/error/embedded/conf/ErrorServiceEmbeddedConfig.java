@@ -13,6 +13,8 @@ import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
+ * Embedded error service configuration
+ *
  * @author sibmaks
  * @since 0.0.1
  */
