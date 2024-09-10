@@ -40,7 +40,7 @@ public class ErrorServiceEmbeddedConfig implements ImportAware {
      * @return instance of embedded mutable error service
      */
     @Bean
-    public MutableErrorService errorServiceEmbedded(MutableContentService mutableContentService) {
+    public MutableErrorService mutableErrorServiceEmbedded(MutableContentService mutableContentService) {
         return new MutableErrorServiceEmbedded(mutableContentService);
     }
 
