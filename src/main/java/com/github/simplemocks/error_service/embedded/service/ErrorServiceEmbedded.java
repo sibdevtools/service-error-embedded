@@ -1,9 +1,9 @@
-package com.github.simplemocks.error.embedded.service;
+package com.github.simplemocks.error_service.embedded.service;
 
 import com.github.simplemocks.content.api.condition.EqualsCondition;
 import com.github.simplemocks.content.api.rq.GetContentRq;
 import com.github.simplemocks.content.api.service.ContentService;
-import com.github.simplemocks.error.embedded.constants.Constants;
+import com.github.simplemocks.error_service.embedded.constants.Constants;
 import com.github.simplemocks.error_service.api.dto.LocalizedError;
 import com.github.simplemocks.error_service.api.rq.LocalizeErrorRq;
 import com.github.simplemocks.error_service.api.rs.LocalizeErrorRs;

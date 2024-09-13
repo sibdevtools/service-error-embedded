@@ -1,16 +1,20 @@
-package com.github.simplemocks.error.embedded.service;
+package com.github.simplemocks.error_service.embedded.service;
 
 import com.github.simplemocks.content.mutable.api.rq.CreateContentGroupRq;
 import com.github.simplemocks.content.mutable.api.rq.CreateContentRq;
 import com.github.simplemocks.content.mutable.api.rq.CreateSystemRq;
 import com.github.simplemocks.content.mutable.api.rq.DeleteContentRq;
 import com.github.simplemocks.content.mutable.api.service.MutableContentService;
-import com.github.simplemocks.error.embedded.constants.Constants;
+import com.github.simplemocks.error_service.embedded.conf.ErrorServiceEmbeddedCondition;
+import com.github.simplemocks.error_service.embedded.constants.Constants;
 import com.github.simplemocks.error_service.mutable.api.rq.AddLocalizationsRq;
 import com.github.simplemocks.error_service.mutable.api.rq.DeleteLocalizationsRq;
 import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -21,6 +25,8 @@ import java.util.Map;
  * @since 0.0.1
  */
 @Slf4j
+@Service
+@Conditional(ErrorServiceEmbeddedCondition.class)
 public class MutableErrorServiceEmbedded implements MutableErrorService {
     private final MutableContentService mutableContentService;
 
@@ -29,6 +35,7 @@ public class MutableErrorServiceEmbedded implements MutableErrorService {
      *
      * @param mutableContentService mutable content service
      */
+    @Autowired
     public MutableErrorServiceEmbedded(MutableContentService mutableContentService) {
         this.mutableContentService = mutableContentService;
     }

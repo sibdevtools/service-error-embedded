@@ -1,12 +1,16 @@
-package com.github.simplemocks.error.embedded.conf;
+package com.github.simplemocks.error_service.embedded.conf;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.github.simplemocks.content.api.service.ContentService;
-import com.github.simplemocks.content.mutable.api.service.MutableContentService;
-import com.github.simplemocks.error.embedded.EnableErrorServiceEmbedded;
-import com.github.simplemocks.error.embedded.service.ErrorServiceEmbedded;
-import com.github.simplemocks.error.embedded.service.MutableErrorServiceEmbedded;
 import com.github.simplemocks.error_service.api.service.ErrorService;
-import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
+import com.github.simplemocks.error_service.embedded.EnableErrorServiceEmbedded;
+import com.github.simplemocks.error_service.embedded.service.ErrorServiceEmbedded;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportAware;
@@ -33,15 +37,15 @@ public class ErrorServiceEmbeddedConfig implements ImportAware {
         return new ErrorServiceEmbedded(defaultTitle, defaultMessage, contentService);
     }
 
-    /**
-     * Construct embedded mutable error service bean
-     *
-     * @param mutableContentService mutable content service
-     * @return instance of embedded mutable error service
-     */
-    @Bean
-    public MutableErrorService mutableErrorServiceEmbedded(MutableContentService mutableContentService) {
-        return new MutableErrorServiceEmbedded(mutableContentService);
+    @Bean("errorServiceObjectMapper")
+    public ObjectMapper errorServiceObjectMapper() {
+        return JsonMapper.builder()
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .addModule(new ParameterNamesModule())
+                .addModule(new Jdk8Module())
+                .addModule(new JavaTimeModule())
+                .build();
     }
 
     @Override

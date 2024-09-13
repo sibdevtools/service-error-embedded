@@ -1,0 +1,7 @@
+{
+  "ERROR_LOCALIZATIONS_LOADING_EXCEPTION": {
+    "title": "Ошибка загрузки",
+    "description": "Ошибка загрузки локализаций ошибок",
+    "systemMessage": "Errors localization error exception"
+  }
+}

@@ -1,5 +1,6 @@
-package com.github.simplemocks.error.embedded.constants;
+package com.github.simplemocks.error_service.embedded.constants;
 
+import com.github.simplemocks.error_service.api.dto.ErrorSourceId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,10 @@ public final class Constants {
      * Content service error type.
      */
     public static final String CONTENT_TYPE = "simple-mocks.errors";
+    /**
+     * Error source identifier
+     */
+    public static final ErrorSourceId ERROR_SOURCE_ID = new ErrorSourceId("ERROR_SERVICE");
 
     /**
      * Content service 'locale' attribute code
