@@ -78,8 +78,7 @@ public class ErrorLocalizationsJsonLoader {
                             var jsonErrorDto = it.getValue();
                             return new LocalizedError(
                                     jsonErrorDto.getTitle(),
-                                    jsonErrorDto.getMessage(),
-                                    jsonErrorDto.getSystemMessage()
+                                    jsonErrorDto.getMessage()
                             );
                         }
                 ));

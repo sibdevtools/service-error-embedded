@@ -1,7 +1,6 @@
 {
   "ERROR_LOCALIZATIONS_LOADING_EXCEPTION": {
     "title": "Loading error",
-    "description": "Errors localizations error",
-    "systemMessage": "Errors localization error exception"
+    "description": "Errors localizations error"
   }
 }

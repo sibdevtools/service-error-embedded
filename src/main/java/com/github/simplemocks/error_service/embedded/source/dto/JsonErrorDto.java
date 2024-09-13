@@ -18,5 +18,4 @@ import lombok.Setter;
 public class JsonErrorDto {
     private String title;
     private String message;
-    private String systemMessage;
 }

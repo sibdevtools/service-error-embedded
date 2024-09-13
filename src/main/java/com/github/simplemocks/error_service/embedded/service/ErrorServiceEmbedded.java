@@ -80,8 +80,7 @@ public class ErrorServiceEmbedded implements ErrorService {
 
         var localizedError = new LocalizedError(
                 defaultTitle,
-                defaultMessage,
-                null
+                defaultMessage
         );
         return new LocalizeErrorRs(localizedError);
     }
