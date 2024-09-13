@@ -1,4 +1,4 @@
-package com.github.simple_mocks.error.embedded.constants;
+package com.github.simplemocks.error.embedded.constants;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

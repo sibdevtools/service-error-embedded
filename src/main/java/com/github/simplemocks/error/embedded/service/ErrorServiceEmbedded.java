@@ -1,13 +1,14 @@
-package com.github.simple_mocks.error.embedded.service;
+package com.github.simplemocks.error.embedded.service;
 
-import com.github.simple_mocks.content.api.condition.EqualsCondition;
-import com.github.simple_mocks.content.api.rq.GetContentRq;
-import com.github.simple_mocks.content.api.service.ContentService;
-import com.github.simple_mocks.error.embedded.constants.Constants;
-import com.github.simple_mocks.error_service.api.dto.LocalizedError;
-import com.github.simple_mocks.error_service.api.rq.LocalizeErrorRq;
-import com.github.simple_mocks.error_service.api.service.ErrorService;
-import com.github.simple_mocks.error_service.exception.ServiceException;
+import com.github.simplemocks.content.api.condition.EqualsCondition;
+import com.github.simplemocks.content.api.rq.GetContentRq;
+import com.github.simplemocks.content.api.service.ContentService;
+import com.github.simplemocks.error.embedded.constants.Constants;
+import com.github.simplemocks.error_service.api.dto.LocalizedError;
+import com.github.simplemocks.error_service.api.rq.LocalizeErrorRq;
+import com.github.simplemocks.error_service.api.rs.LocalizeErrorRs;
+import com.github.simplemocks.error_service.api.service.ErrorService;
+import com.github.simplemocks.error_service.exception.ServiceException;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +44,7 @@ public class ErrorServiceEmbedded implements ErrorService {
 
     @Nonnull
     @Override
-    public LocalizedError localize(@Nonnull LocalizeErrorRq rq) {
+    public LocalizeErrorRs localize(@Nonnull LocalizeErrorRq rq) {
         var localizationId = rq.errorLocalizationId();
         var localizationCode = localizationId.code();
         var sourceId = localizationId.sourceId();
@@ -64,22 +65,24 @@ public class ErrorServiceEmbedded implements ErrorService {
 
             var rs = contentService.getContent(contentRq);
 
-            var contents = rs.contents();
+            var contents = rs.getBody();
 
             for (var entry : contents.entrySet()) {
                 var contentHolder = entry.getValue();
                 if (contentHolder != null) {
-                    return contentHolder.getContent();
+                    var localizedError = contentHolder.getContent();
+                    return new LocalizeErrorRs(localizedError);
                 }
             }
         } catch (ServiceException e) {
             log.error("Failed to localize error: ", e);
         }
 
-        return new LocalizedError(
+        var localizedError = new LocalizedError(
                 defaultTitle,
                 defaultMessage,
                 null
         );
+        return new LocalizeErrorRs(localizedError);
     }
 }

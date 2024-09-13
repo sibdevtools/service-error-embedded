@@ -1,6 +1,6 @@
-package com.github.simple_mocks.error.embedded;
+package com.github.simplemocks.error.embedded;
 
-import com.github.simple_mocks.error.embedded.conf.ErrorServiceEmbeddedConfig;
+import com.github.simplemocks.error.embedded.conf.ErrorServiceEmbeddedConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

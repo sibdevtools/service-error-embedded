@@ -1,12 +1,12 @@
-package com.github.simple_mocks.error.embedded.conf;
+package com.github.simplemocks.error.embedded.conf;
 
-import com.github.simple_mocks.content.api.service.ContentService;
-import com.github.simple_mocks.content.mutable.api.service.MutableContentService;
-import com.github.simple_mocks.error.embedded.EnableErrorServiceEmbedded;
-import com.github.simple_mocks.error.embedded.service.ErrorServiceEmbedded;
-import com.github.simple_mocks.error.embedded.service.MutableErrorServiceEmbedded;
-import com.github.simple_mocks.error_service.api.service.ErrorService;
-import com.github.simple_mocks.error_service.mutable.api.service.MutableErrorService;
+import com.github.simplemocks.content.api.service.ContentService;
+import com.github.simplemocks.content.mutable.api.service.MutableContentService;
+import com.github.simplemocks.error.embedded.EnableErrorServiceEmbedded;
+import com.github.simplemocks.error.embedded.service.ErrorServiceEmbedded;
+import com.github.simplemocks.error.embedded.service.MutableErrorServiceEmbedded;
+import com.github.simplemocks.error_service.api.service.ErrorService;
+import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportAware;

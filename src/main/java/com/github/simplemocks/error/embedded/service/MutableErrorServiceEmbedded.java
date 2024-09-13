@@ -1,14 +1,14 @@
-package com.github.simple_mocks.error.embedded.service;
+package com.github.simplemocks.error.embedded.service;
 
-import com.github.simple_mocks.content.mutable.api.rq.CreateContentGroupRq;
-import com.github.simple_mocks.content.mutable.api.rq.CreateContentRq;
-import com.github.simple_mocks.content.mutable.api.rq.CreateSystemRq;
-import com.github.simple_mocks.content.mutable.api.rq.DeleteContentRq;
-import com.github.simple_mocks.content.mutable.api.service.MutableContentService;
-import com.github.simple_mocks.error.embedded.constants.Constants;
-import com.github.simple_mocks.error_service.mutable.api.rq.AddLocalizationsRq;
-import com.github.simple_mocks.error_service.mutable.api.rq.DeleteLocalizationsRq;
-import com.github.simple_mocks.error_service.mutable.api.service.MutableErrorService;
+import com.github.simplemocks.content.mutable.api.rq.CreateContentGroupRq;
+import com.github.simplemocks.content.mutable.api.rq.CreateContentRq;
+import com.github.simplemocks.content.mutable.api.rq.CreateSystemRq;
+import com.github.simplemocks.content.mutable.api.rq.DeleteContentRq;
+import com.github.simplemocks.content.mutable.api.service.MutableContentService;
+import com.github.simplemocks.error.embedded.constants.Constants;
+import com.github.simplemocks.error_service.mutable.api.rq.AddLocalizationsRq;
+import com.github.simplemocks.error_service.mutable.api.rq.DeleteLocalizationsRq;
+import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
