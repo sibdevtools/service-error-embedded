@@ -69,7 +69,7 @@ public class ErrorLocalizationsJsonLoader {
         } catch (IOException e) {
             throw new ErrorLocalizationsLoadingException("Source read exception", e);
         }
-        var errorLocalizations = jsonErrorsDto.getErrors()
+        var errorLocalizations = jsonErrorsDto
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(
