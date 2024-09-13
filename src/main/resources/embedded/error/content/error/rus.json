@@ -1,6 +1,6 @@
 {
   "ERROR_LOCALIZATIONS_LOADING_EXCEPTION": {
     "title": "Ошибка загрузки",
-    "description": "Ошибка загрузки локализаций ошибок"
+    "message": "Ошибка загрузки локализаций ошибок"
   }
 }

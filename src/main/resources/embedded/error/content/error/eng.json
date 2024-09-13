@@ -1,6 +1,6 @@
 {
   "ERROR_LOCALIZATIONS_LOADING_EXCEPTION": {
     "title": "Loading error",
-    "description": "Errors localizations error"
+    "message": "Errors localizations error"
   }
 }
