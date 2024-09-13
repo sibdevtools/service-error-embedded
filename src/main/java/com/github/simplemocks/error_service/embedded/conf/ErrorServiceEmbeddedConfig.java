@@ -11,6 +11,7 @@ import com.github.simplemocks.content.api.service.ContentService;
 import com.github.simplemocks.error_service.api.service.ErrorService;
 import com.github.simplemocks.error_service.embedded.EnableErrorServiceEmbedded;
 import com.github.simplemocks.error_service.embedded.service.ErrorServiceEmbedded;
+import com.github.simplemocks.error_service.mutable.api.source.ErrorLocalizationsJsonSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportAware;
@@ -22,6 +23,16 @@ import org.springframework.core.type.AnnotationMetadata;
  * @author sibmaks
  * @since 0.0.1
  */
+@ErrorLocalizationsJsonSource(
+        systemCode = "ERROR_SERVICE",
+        iso3Code = "eng",
+        path = "classpath:/embedded/error/content/error/eng.json"
+)
+@ErrorLocalizationsJsonSource(
+        systemCode = "ERROR_SERVICE",
+        iso3Code = "rus",
+        path = "classpath:/embedded/error/content/error/rus.json"
+)
 public class ErrorServiceEmbeddedConfig implements ImportAware {
     private String defaultTitle;
     private String defaultMessage;

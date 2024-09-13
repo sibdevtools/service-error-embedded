@@ -14,16 +14,6 @@ import java.util.Objects;
  * @author sibmaks
  * @since 0.0.10
  */
-@ErrorLocalizationsJsonSource(
-        systemCode = "ERROR_SERVICE",
-        iso3Code = "eng",
-        path = "classpath:/embedded/error/content/error/eng.json"
-)
-@ErrorLocalizationsJsonSource(
-        systemCode = "ERROR_SERVICE",
-        iso3Code = "rus",
-        path = "classpath:/embedded/error/content/error/rus.json"
-)
 public class ErrorServiceEmbeddedCondition implements Condition {
     @Override
     public boolean matches(@Nonnull ConditionContext context,
