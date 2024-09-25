@@ -8,7 +8,10 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
-version = "${project.property("version")}"
+val versionFromProperty = "${project.property("version")}"
+val versionFromEnv: String? = System.getenv("VERSION")
+
+version = versionFromEnv ?: versionFromProperty
 group = "${project.property("group")}"
 
 val targetJavaVersion = (project.property("jdk_version") as String).toInt()
@@ -49,9 +52,9 @@ dependencies {
 
     implementation("jakarta.annotation:jakarta.annotation-api")
 
-    implementation("com.github.simple-mocks:api-common:${project.property("lib_api_common_version")}")
-    implementation("com.github.simple-mocks:api-error:${project.property("lib_api_error_version")}")
-    implementation("com.github.simple-mocks:api-content:${project.property("lib_api_content_version")}")
+    implementation("com.github.sibdevtools:api-common:${project.property("lib_api_common_version")}")
+    implementation("com.github.sibdevtools:api-error:${project.property("lib_api_error_version")}")
+    implementation("com.github.sibdevtools:api-content:${project.property("lib_api_content_version")}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -115,7 +118,7 @@ publishing {
             from(components["java"])
             pom {
                 packaging = "jar"
-                url = "https://github.com/simple-mocks/service-error-embedded"
+                url = "https://github.com/sibdevtools/service-error-embedded"
 
                 licenses {
                     license {
@@ -125,9 +128,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:https://github.com/simple-mocks/service-error-embedded.git")
-                    developerConnection.set("scm:git:ssh://github.com/simple-mocks")
-                    url.set("https://github.com/simple-mocks/service-error-embedded")
+                    connection.set("scm:https://github.com/sibdevtools/service-error-embedded.git")
+                    developerConnection.set("scm:git:ssh://github.com/sibdevtools")
+                    url.set("https://github.com/sibdevtools/service-error-embedded")
                 }
 
                 developers {

@@ -1,16 +1,20 @@
-package com.github.simplemocks.error_service.embedded.service;
+package com.github.sibdevtools.error.embedded.service;
 
-import com.github.simplemocks.content.api.condition.EqualsCondition;
-import com.github.simplemocks.content.api.rq.GetContentRq;
-import com.github.simplemocks.content.api.service.ContentService;
-import com.github.simplemocks.error_service.embedded.constants.Constants;
-import com.github.simplemocks.error_service.api.dto.LocalizedError;
-import com.github.simplemocks.error_service.api.rq.LocalizeErrorRq;
-import com.github.simplemocks.error_service.api.rs.LocalizeErrorRs;
-import com.github.simplemocks.error_service.api.service.ErrorService;
-import com.github.simplemocks.error_service.exception.ServiceException;
+import com.github.sibdevtools.content.api.condition.EqualsCondition;
+import com.github.sibdevtools.content.api.rq.GetContentRq;
+import com.github.sibdevtools.content.api.service.ContentService;
+import com.github.sibdevtools.error.embedded.conf.ErrorServiceEmbeddedProperties;
+import com.github.sibdevtools.error.embedded.constants.Constants;
+import com.github.sibdevtools.error.api.dto.LocalizedError;
+import com.github.sibdevtools.error.api.rq.LocalizeErrorRq;
+import com.github.sibdevtools.error.api.rs.LocalizeErrorRs;
+import com.github.sibdevtools.error.api.service.ErrorService;
+import com.github.sibdevtools.error.exception.ServiceException;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,24 +25,23 @@ import java.util.List;
  * @since 0.0.1
  */
 @Slf4j
+@Service
+@ConditionalOnProperty(name = "service.error.mode", havingValue = "EMBEDDED")
 public class ErrorServiceEmbedded implements ErrorService {
 
-    private final String defaultTitle;
-    private final String defaultMessage;
+    private final ErrorServiceEmbeddedProperties properties;
     private final ContentService contentService;
 
     /**
      * Constructor embedded error service
      *
-     * @param defaultTitle   default title
-     * @param defaultMessage default message
+     * @param properties     embedded error service properties
      * @param contentService content service
      */
-    public ErrorServiceEmbedded(String defaultTitle,
-                                String defaultMessage,
+    @Autowired
+    public ErrorServiceEmbedded(ErrorServiceEmbeddedProperties properties,
                                 ContentService contentService) {
-        this.defaultTitle = defaultTitle;
-        this.defaultMessage = defaultMessage;
+        this.properties = properties;
         this.contentService = contentService;
     }
 
@@ -79,8 +82,8 @@ public class ErrorServiceEmbedded implements ErrorService {
         }
 
         var localizedError = new LocalizedError(
-                defaultTitle,
-                defaultMessage
+                properties.getDefaultTitle(),
+                properties.getDefaultMessage()
         );
         return new LocalizeErrorRs(localizedError);
     }
