@@ -1,18 +1,18 @@
-package com.github.simplemocks.error_service.embedded.service;
+package com.github.sibdevtools.error.embedded.service;
 
-import com.github.simplemocks.content.mutable.api.rq.CreateContentGroupRq;
-import com.github.simplemocks.content.mutable.api.rq.CreateContentRq;
-import com.github.simplemocks.content.mutable.api.rq.CreateSystemRq;
-import com.github.simplemocks.content.mutable.api.rq.DeleteContentRq;
-import com.github.simplemocks.content.mutable.api.service.MutableContentService;
-import com.github.simplemocks.error_service.embedded.conf.ErrorServiceEmbeddedCondition;
-import com.github.simplemocks.error_service.embedded.constants.Constants;
-import com.github.simplemocks.error_service.mutable.api.rq.AddLocalizationsRq;
-import com.github.simplemocks.error_service.mutable.api.rq.DeleteLocalizationsRq;
-import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
+import com.github.sibdevtools.error.embedded.constants.Constants;
+import com.github.sibdevtools.content.mutable.api.rq.CreateContentGroupRq;
+import com.github.sibdevtools.content.mutable.api.rq.CreateContentRq;
+import com.github.sibdevtools.content.mutable.api.rq.CreateSystemRq;
+import com.github.sibdevtools.content.mutable.api.rq.DeleteContentRq;
+import com.github.sibdevtools.content.mutable.api.service.MutableContentService;
+import com.github.sibdevtools.error.mutable.api.rq.AddLocalizationsRq;
+import com.github.sibdevtools.error.mutable.api.rq.DeleteLocalizationsRq;
+import com.github.sibdevtools.error.mutable.api.service.MutableErrorService;
 import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-@Conditional(ErrorServiceEmbeddedCondition.class)
+@ConditionalOnProperty(name = "service.error.mode", havingValue = "EMBEDDED")
 public class MutableErrorServiceEmbedded implements MutableErrorService {
     private final MutableContentService mutableContentService;
 

@@ -1,20 +1,19 @@
-package com.github.simplemocks.error_service.embedded.source;
+package com.github.sibdevtools.error.embedded.source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.simplemocks.error_service.api.dto.ErrorSourceId;
-import com.github.simplemocks.error_service.api.dto.LocalizedError;
-import com.github.simplemocks.error_service.embedded.conf.ErrorServiceEmbeddedCondition;
-import com.github.simplemocks.error_service.embedded.exception.ErrorLocalizationsLoadingException;
-import com.github.simplemocks.error_service.embedded.source.dto.JsonErrorsDto;
-import com.github.simplemocks.error_service.mutable.api.dto.ErrorLocalizationKey;
-import com.github.simplemocks.error_service.mutable.api.rq.AddLocalizationsRq;
-import com.github.simplemocks.error_service.mutable.api.service.MutableErrorService;
-import com.github.simplemocks.error_service.mutable.api.source.ErrorLocalizationsJsonSource;
-import com.github.simplemocks.error_service.mutable.api.source.ErrorLocalizationsJsonSources;
+import com.github.sibdevtools.error.api.dto.ErrorSourceId;
+import com.github.sibdevtools.error.api.dto.LocalizedError;
+import com.github.sibdevtools.error.embedded.exception.ErrorLocalizationsLoadingException;
+import com.github.sibdevtools.error.embedded.source.dto.JsonErrorsDto;
+import com.github.sibdevtools.error.mutable.api.dto.ErrorLocalizationKey;
+import com.github.sibdevtools.error.mutable.api.rq.AddLocalizationsRq;
+import com.github.sibdevtools.error.mutable.api.service.MutableErrorService;
+import com.github.sibdevtools.error.mutable.api.source.ErrorLocalizationsJsonSource;
+import com.github.sibdevtools.error.mutable.api.source.ErrorLocalizationsJsonSources;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ResourceLoader;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-@Conditional(ErrorServiceEmbeddedCondition.class)
+@ConditionalOnProperty(name = "service.error.mode", havingValue = "EMBEDDED")
 public class ErrorLocalizationsJsonLoader {
     private final MutableErrorService mutableErrorService;
     private final ObjectMapper objectMapper;

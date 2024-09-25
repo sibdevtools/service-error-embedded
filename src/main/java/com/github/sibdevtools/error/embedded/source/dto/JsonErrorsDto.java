@@ -1,4 +1,4 @@
-package com.github.simplemocks.error_service.embedded.source.dto;
+package com.github.sibdevtools.error.embedded.source.dto;
 
 import java.util.LinkedHashMap;
 

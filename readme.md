@@ -1,4 +1,4 @@
-# Simple Mock - Error Embedded
+# SibDevTools - Error Embedded
 
 ## To build
 
